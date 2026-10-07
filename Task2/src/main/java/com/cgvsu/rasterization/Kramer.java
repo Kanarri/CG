@@ -1,35 +1,34 @@
-package ru.vsu.cs.course1;
+package com.cgvsu.rasterization;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Kramer {
-    public static List<String> solveKramer(double[][] arr) {
-        List<String> answer = new ArrayList<>(); // список хов
-
-        if (arr[0].length - arr.length != 1) {
-            answer.add("Неправильная матрица");
-            return answer;
+    public static double[] solveKramer(int[][] array) {
+        if (array[0].length - array.length != 1) {
+            return null;
         }
-        double[][] mainmatrix = sliceMatrix(arr); // матрица без последнего столбца
+
+        double[][] arr = Arrays.stream(array)
+                .map(row -> Arrays.stream(row).asDoubleStream().toArray())
+                .toArray(double[][]::new);
+        double[][] mainmatrix = sliceMatrix(arr);
         double main_det = Recursion.getDet(mainmatrix);
 
         if (main_det == 0) {
-            answer.add("Решений нет или их бесконечно много");
-            return answer;
+            return null;
         }
-        for (int i = 0; i < arr.length; i++) {
 
+        double[] answer = new double[arr.length];
+        for (int i = 0; i < arr.length; i++) {
             double[][] swapmatrix = swapMatrix(mainmatrix, arr, i);
             double det = Recursion.getDet(swapmatrix);
-            answer.add(String.format("%.3f", det/main_det));
-            //answer[i] = Recursion.getDet(swapMatrix(mainmatrix, arr, i))/main_det;
+            answer[i] = det / main_det;
         }
         return answer;
     }
 
-    static double[][] sliceMatrix(double[][] arr) { //отрезает последний столбик
-        double[][] answer = new double[arr.length][arr[0].length-1];
+    static double[][] sliceMatrix(double[][] arr) {
+        double[][] answer = new double[arr.length][arr[0].length - 1];
         for (int r = 0; r < answer.length; r++) {
             for (int c = 0; c < answer[0].length; c++) {
                 answer[r][c] = arr[r][c];
@@ -43,11 +42,10 @@ public class Kramer {
         for (int r = 0; r < matrix.length; r++) {
             for (int c = 0; c < matrix[0].length; c++)
                 if (c == column) {
-                    answer[r][c] = arrlastcol[r][arrlastcol[0].length-1];
+                    answer[r][c] = arrlastcol[r][arrlastcol[0].length - 1];
                 } else {
                     answer[r][c] = arrlastcol[r][c];
                 }
-
         }
         return answer;
     }
@@ -55,13 +53,10 @@ public class Kramer {
     public static String[] listToArray(double[] doubles) {
         String[] answer = new String[doubles.length];
         int i = 0;
-        for (double v: doubles) {
+        for (double v : doubles) {
             answer[i] = String.format("%.3f", v);
             i++;
         }
         return answer;
-    }
-    public static String[] listToArray(List<String> strings) {
-        return strings.toArray(new String[0]);
     }
 }

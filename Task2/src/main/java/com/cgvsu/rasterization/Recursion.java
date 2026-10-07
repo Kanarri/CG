@@ -1,6 +1,4 @@
-package ru.vsu.cs.course1;
-
-import java.math.BigDecimal;
+package com.cgvsu.rasterization;
 
 public class Recursion {
     public static double getDet(double[][] arr) {
