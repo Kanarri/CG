@@ -9,19 +9,6 @@ import java.util.List;
 
 public class Rasterization {
 
-    /*public static void drawRectangle(
-            final GraphicsContext graphicsContext,
-            final int x, final int y,
-            final int width, final int height,
-            final Color color)
-    {
-        final PixelWriter pixelWriter = graphicsContext.getPixelWriter();
-
-        for (int row = y; row < y + height; ++row)
-            for (int col = x; col < x + width; ++col)
-                pixelWriter.setColor(col, row, color);
-    }*/
-
     public static void fillTriangle(final GraphicsContext graphicsContext, int[] verX, int[] verY, Color[] colors) {
 
         Color color = Color.GREEN;
