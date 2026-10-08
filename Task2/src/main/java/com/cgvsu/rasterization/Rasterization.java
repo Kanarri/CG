@@ -30,13 +30,18 @@ public class Rasterization {
         int leftBorder = Arrays.stream(verX).min().getAsInt();
         int rightBorder = Arrays.stream(verX).max().getAsInt();
         int upperBorder = Arrays.stream(verY).min().getAsInt();
-        int lowerBorder = Arrays.stream(verX).max().getAsInt();
+        int lowerBorder = Arrays.stream(verY).max().getAsInt();
 
         //средняя линия которая делит треугольник на верхнюю и нижнюю части
         int middleLine = getMiddleY(verY);
-        
-        //верхняя часть
-        for (int y = upperBorder; y <= middleLine; y++){
+
+        drawHalfOfTriangle(graphicsContext, upperBorder, middleLine, leftBorder, rightBorder, verX, verY, color);
+        drawHalfOfTriangle(graphicsContext, middleLine, lowerBorder, leftBorder, rightBorder, verX, verY, color);
+    }
+
+    public static void drawHalfOfTriangle(final GraphicsContext graphicsContext, int y1, int y2, int leftBorder, int rightBorder, int[] verX, int[] verY, Color color){
+        final PixelWriter pixelWriter = graphicsContext.getPixelWriter();
+        for (int y = y1; y <= y2; y++){
             int leftX = 0;
             int rightX = 0;
 
@@ -57,9 +62,7 @@ public class Rasterization {
             for (int x = leftX; x <= rightX; x++){
                 pixelWriter.setColor(x, y, color);
             }
-
         }
-
     }
 
     private static boolean isInTriangle(int[] X, int[] Y, int x, int y) {
