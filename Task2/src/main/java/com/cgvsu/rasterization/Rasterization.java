@@ -9,24 +9,26 @@ import java.util.List;
 
 public class Rasterization {
 
-    public static void fillTriangle(final GraphicsContext graphicsContext, int[] verX, int[] verY, Color[] colors) {
+    public static void fillTriangle(final GraphicsContext gc, int[] verX, int[] verY, Color color) {
+        fillTriangle(gc, verX, verY, ColorProviders.solid(color));
+    }
 
-        Color color = Color.GREEN;
-        final PixelWriter pixelWriter = graphicsContext.getPixelWriter();
-        // bounding box
-        int leftBorder = Arrays.stream(verX).min().getAsInt();
+    public static void fillTriangle(final GraphicsContext gc, int[] verX, int[] verY, Color[] colors) {
+        fillTriangle(gc, verX, verY, ColorProviders.interpolated(verX, verY, colors));
+    }
+
+    public static void fillTriangle(final GraphicsContext gc, int[] verX, int[] verY, ColorProvider provider) {
+        int leftBorder  = Arrays.stream(verX).min().getAsInt();
         int rightBorder = Arrays.stream(verX).max().getAsInt();
         int upperBorder = Arrays.stream(verY).min().getAsInt();
         int lowerBorder = Arrays.stream(verY).max().getAsInt();
+        int middleLine  = getMiddleY(verY);
 
-        //средняя линия которая делит треугольник на верхнюю и нижнюю части
-        int middleLine = getMiddleY(verY);
-
-        drawHalfOfTriangle(graphicsContext, upperBorder, middleLine, leftBorder, rightBorder, verX, verY, color);
-        drawHalfOfTriangle(graphicsContext, middleLine, lowerBorder, leftBorder, rightBorder, verX, verY, color);
+        drawHalfOfTriangle(gc, upperBorder, middleLine, leftBorder, rightBorder, verX, verY, provider);
+        drawHalfOfTriangle(gc, middleLine, lowerBorder, leftBorder, rightBorder, verX, verY, provider);
     }
 
-    public static void drawHalfOfTriangle(final GraphicsContext graphicsContext, int y1, int y2, int leftBorder, int rightBorder, int[] verX, int[] verY, Color color){
+    public static void drawHalfOfTriangle(final GraphicsContext graphicsContext, int y1, int y2, int leftBorder, int rightBorder, int[] verX, int[] verY, ColorProvider provider){
         final PixelWriter pixelWriter = graphicsContext.getPixelWriter();
         for (int y = y1; y <= y2; y++){
             int leftX = 0;
@@ -47,18 +49,13 @@ public class Rasterization {
             }
 
             for (int x = leftX; x <= rightX; x++){
-                pixelWriter.setColor(x, y, color);
+                pixelWriter.setColor(x, y, provider.colorAt(x, y));
             }
         }
     }
 
     private static boolean isInTriangle(int[] X, int[] Y, int x, int y) {
-        int[][] matrix = new int[][]{
-                {X[0], X[1], X[2], x},
-                {Y[0], Y[1], Y[2], y},
-                {1, 1, 1, 1},
-        };
-        double[] barCoords = Kramer.solveKramer(matrix);
+        double[] barCoords = ColorProviders.getBarCoords(X, Y, x, y);
         for (int i = 0; i < 3; i++){
             if (barCoords[i] < 0){
                 return false;

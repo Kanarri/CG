@@ -14,7 +14,7 @@ public class RasterizationController {
     @FXML
     private Canvas canvas;
 
-    final Color[] basicColors = new Color[]{Color.RED, Color.BLUE, Color.GREEN};
+    final Color[] basicColors = new Color[]{Color.RED, Color.BLUE, Color.BLACK};
 
     final Triangle dt1 = new Triangle(new int[]{0, 200, 350}, new int[]{0, 500, 200}, basicColors);
     final Triangle d2 = new Triangle(new int[]{10, 100, 200}, new int[]{100, 500, 20}, basicColors);
@@ -33,8 +33,8 @@ public class RasterizationController {
     private void initialize() {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
-        parseAndDrawTriangleDIY(et4);
-        parseAndDrawTriangleSYS(et4);
+        parseAndDrawTriangleDIY(dt1);
+        //parseAndDrawTriangleSYS(dt1);
 
     }
 
