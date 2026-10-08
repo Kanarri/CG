@@ -49,14 +49,4 @@ public class Kramer {
         }
         return answer;
     }
-
-    public static String[] listToArray(double[] doubles) {
-        String[] answer = new String[doubles.length];
-        int i = 0;
-        for (double v : doubles) {
-            answer[i] = String.format("%.3f", v);
-            i++;
-        }
-        return answer;
-    }
 }

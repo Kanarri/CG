@@ -16,7 +16,7 @@ public class RasterizationController {
 
     final Color[] basicColors = new Color[]{Color.RED, Color.BLUE, Color.BLACK};
 
-    final Triangle dt1 = new Triangle(new int[]{0, 200, 350}, new int[]{0, 500, 200}, basicColors);
+    final Triangle dt1 = new Triangle(new int[]{0, 200, 350}, new int[]{0, 500, 200}, Color.GOLD);
     final Triangle d2 = new Triangle(new int[]{10, 100, 200}, new int[]{100, 500, 20}, basicColors);
     final Triangle rt1 = new Triangle(new int[]{10, 10, 100}, new int[]{10, 200, 200}, basicColors);
     final Triangle rt2 = new Triangle(new int[]{10, 100, 10}, new int[]{10, 10, 150}, basicColors);

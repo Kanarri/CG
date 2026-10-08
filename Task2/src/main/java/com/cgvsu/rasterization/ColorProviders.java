@@ -7,12 +7,12 @@ public class ColorProviders {
         return (x, y) -> color;
     }
 
-    public static ColorProvider interpolated(int[] verX, int[] verY, Color[] colors) {
+    public static ColorProvider interpolated(int[] verX, int[] verY, Color[] C) {
         return (x, y) -> {
             double[] bc = getBarCoords(verX, verY, x, y);
-            double r = bc[0] * colors[0].getRed() + bc[1] * colors[1].getRed() + bc[2] * colors[2].getRed();
-            double g = bc[0] * colors[0].getGreen() + bc[1] * colors[1].getGreen() + bc[2] * colors[2].getGreen();
-            double b = bc[0] * colors[0].getBlue() + bc[1] * colors[1].getBlue() + bc[2] * colors[2].getBlue();
+            double r = bc[0] * C[0].getRed() + bc[1] * C[1].getRed() + bc[2] * C[2].getRed();
+            double g = bc[0] * C[0].getGreen() + bc[1] * C[1].getGreen() + bc[2] * C[2].getGreen();
+            double b = bc[0] * C[0].getBlue() + bc[1] * C[1].getBlue() + bc[2] * C[2].getBlue();
             return new Color(fix(r), fix(g), fix(b), 1);
         };
     }
