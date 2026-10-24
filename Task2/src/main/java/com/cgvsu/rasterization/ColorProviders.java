@@ -1,5 +1,6 @@
 package com.cgvsu.rasterization;
 
+import Jama.Matrix;
 import javafx.scene.paint.Color;
 
 public class ColorProviders {
@@ -28,11 +29,19 @@ public class ColorProviders {
     }
 
     public static double[] getBarCoords(int[] X, int[] Y, int x, int y) {
-        int[][] matrix = new int[][]{
-                {X[0], X[1], X[2], x},
-                {Y[0], Y[1], Y[2], y},
-                {1, 1, 1, 1},
+        double[][] a = {
+                {X[0], X[1], X[2]},
+                {Y[0], Y[1], Y[2]},
+                {1,    1,    1   }
         };
-        return Kramer.solveKramer(matrix);
+        double[][] b = {
+                {x},
+                {y},
+                {1}
+        };
+            Matrix A = new Matrix(a);
+            Matrix B = new Matrix(b);
+            Matrix result = A.solve(B);
+            return result.getColumnPackedCopy();
     }
 }

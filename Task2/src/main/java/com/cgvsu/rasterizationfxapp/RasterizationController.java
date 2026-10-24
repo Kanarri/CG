@@ -14,10 +14,10 @@ public class RasterizationController {
     @FXML
     private Canvas canvas;
 
-    final Color[] basicColors = new Color[]{Color.RED, Color.BLUE, Color.BLACK};
+    final Color[] basicColors = new Color[]{Color.RED, Color.BLUE, Color.GREEN};
 
-    final Triangle dt1 = new Triangle(new int[]{0, 200, 350}, new int[]{0, 500, 200}, Color.GOLD);
-    final Triangle d2 = new Triangle(new int[]{10, 100, 200}, new int[]{100, 500, 20}, basicColors);
+    final Triangle dt1 = new Triangle(new int[]{0, 200, 350}, new int[]{0, 500, 200}, basicColors);
+    final Triangle dt2 = new Triangle(new int[]{10, 100, 200}, new int[]{100, 500, 20}, basicColors);
     final Triangle rt1 = new Triangle(new int[]{10, 10, 100}, new int[]{10, 200, 200}, basicColors);
     final Triangle rt2 = new Triangle(new int[]{10, 100, 10}, new int[]{10, 10, 150}, basicColors);
     final Triangle rt3 = new Triangle(new int[]{100, 100, 10}, new int[]{10, 150, 150}, basicColors);
@@ -26,6 +26,7 @@ public class RasterizationController {
     final Triangle et2 = new Triangle(new int[]{10, 100, 200}, new int[]{10, 200, 10}, basicColors);
     final Triangle et3 = new Triangle(new int[]{10, 10, 150}, new int[]{10, 200, 100}, basicColors);
     final Triangle et4 = new Triangle(new int[]{10, 200, 200}, new int[]{100, 10, 250}, basicColors);
+    final Triangle nt = new Triangle(new int[]{10, 100, 200}, new int[]{100, 57, 10}, basicColors);
 
 
 
@@ -33,8 +34,8 @@ public class RasterizationController {
     private void initialize() {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
-        parseAndDrawTriangleDIY(dt1);
-        //parseAndDrawTriangleSYS(dt1);
+        //parseAndDrawTriangleDIY(nt);
+        parseAndDrawTriangleSYS(new Triangle(new int[]{10, 100, 200}, new int[]{100, 57, 10}, Color.BLUE));
 
     }
 
