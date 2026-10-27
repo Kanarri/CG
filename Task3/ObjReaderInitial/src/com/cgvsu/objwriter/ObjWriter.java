@@ -35,6 +35,13 @@ public class ObjWriter {
             }
             writer.newLine();
 
+            //запись нормалей
+            for (Vector3f v : model.normals){
+                writer.write(String.format(Locale.ROOT, "vn %.4f %.4f %.4f", v.getX(), v.getY(), v.getZ()));
+                writer.newLine();
+            }
+            writer.newLine();
+
             //запись полигонов
             for (Polygon f : model.polygons){
                 ArrayList<Integer> v = f.getVertexIndices();
