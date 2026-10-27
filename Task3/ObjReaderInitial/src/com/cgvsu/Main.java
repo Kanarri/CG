@@ -2,6 +2,7 @@ package com.cgvsu;
 
 import com.cgvsu.model.Model;
 import com.cgvsu.objreader.ObjReader;
+import com.cgvsu.objwriter.ObjWriter;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,5 +22,7 @@ public class Main {
         System.out.println("Texture vertices: " + model.textureVertices.size());
         System.out.println("Normals: " + model.normals.size());
         System.out.println("Polygons: " + model.polygons.size());
+
+        ObjWriter.write(model);
     }
 }
