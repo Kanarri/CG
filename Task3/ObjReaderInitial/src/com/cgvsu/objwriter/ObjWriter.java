@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class ObjWriter {
     public static void write(Model model) throws IOException {
@@ -20,7 +19,6 @@ public class ObjWriter {
 
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING))
         {
-            writer.write("пупупу");
             //запись вершин
             for (Vector3f v : model.vertices){
                 writer.write(String.format(Locale.ROOT, "v  %.4f %.4f %.4f", v.getX(), v.getY(), v.getZ()));
@@ -50,38 +48,45 @@ public class ObjWriter {
 
                 // f 1 2 3 // v
                 if (vn.isEmpty() && vt.isEmpty() && !v.isEmpty()){
-                    String joined = v.stream().map(String::valueOf).collect(Collectors.joining(" "));
-                    writer.write(String.format("f  %s", joined));
+                    StringBuilder sb = new StringBuilder();
+                    for (Integer i : v){
+                        sb.append((i + 1) + " ");
+                    }
+                    sb.delete(sb.length()-1, sb.length());
+                    writer.write(String.format("f  %s", sb));
                 }
+
                 // f 1/1 2/2 3/3 // v/vt
                 if (vn.isEmpty() && !vt.isEmpty() && !v.isEmpty()){
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < v.size(); i++){
-                        sb.append(v.get(i) + "/" + vt.get(i) + " ");
+                        sb.append((v.get(i) + 1) + "/" + (vt.get(i) + 1) + " ");
                     }
                     sb.delete(sb.length()-1, sb.length());
                     writer.write(String.format("f  %s", sb));
                 }
+
                 //    f 1//1 2//2 3//3         v//vn
                 if (!vn.isEmpty() && vt.isEmpty() && !v.isEmpty()){
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < v.size(); i++){
-                        sb.append(v.get(i) + "//" + vn.get(i) + " ");
+                        sb.append((v.get(i) + 1) + "//" + (vn.get(i) + 1) + " ");
                     }
                     sb.delete(sb.length()-1, sb.length());
                     writer.write(String.format("f  %s", sb));
                 }
+
                 // f  1/1/1 2/2/2 3/3/3    v/vt/vn
                 if (!vn.isEmpty() && !vt.isEmpty() && !v.isEmpty()){
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < v.size(); i++){
-                        sb.append(v.get(i) + "/" + vt.get(i) + "/" + vn.get(i) + " ");
+                        sb.append((v.get(i) + 1) + "/" + (vt.get(i) + 1) + "/" + (vn.get(i) + 1) + " ");
                     }
                     sb.delete(sb.length()-1, sb.length());
                     writer.write(String.format("f  %s", sb));
                 }
-                writer.newLine();
 
+                writer.newLine();
             }
         }
     }
