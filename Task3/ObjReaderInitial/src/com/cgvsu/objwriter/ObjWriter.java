@@ -28,7 +28,7 @@ public class ObjWriter {
 
             //запись текстурных вершин
             for (Vector2f v : model.textureVertices){
-                writer.write(String.format(Locale.ROOT, "vt %.4f %.4f %.4f", v.getX(), v.getY(), v.getZ()));
+                writer.write(String.format(Locale.ROOT, "vt %.4f %.4f %.4f", v.getX(), v.getY(), 0.0));
                 writer.newLine();
             }
             writer.newLine();
@@ -42,9 +42,21 @@ public class ObjWriter {
 
             //запись полигонов
             for (Polygon f : model.polygons){
+                if (f == null || f.getVertexIndices().isEmpty()){
+                    continue;
+                }
+
                 ArrayList<Integer> v = f.getVertexIndices();
                 ArrayList<Integer> vt = f.getTextureVertexIndices();
                 ArrayList<Integer> vn = f.getNormalIndices();
+
+                if (!vt.isEmpty() && vt.size() != v.size()) {
+                    throw new ObjWriterException("Vertexes and TextureVertexes arrays have different sizes");
+                }
+
+                if (!vn.isEmpty() && vn.size() != v.size()) {
+                    throw new ObjWriterException("Vertexes and Normals arrays have different sizes");
+                }
 
                 // f 1 2 3 // v
                 if (vn.isEmpty() && vt.isEmpty() && !v.isEmpty()){
@@ -56,7 +68,7 @@ public class ObjWriter {
                     writer.write(String.format("f  %s", sb));
                 }
 
-                // f 1/1 2/2 3/3 // v/vt
+                // f 1/1 2/2 3/3    //    v/vt
                 if (vn.isEmpty() && !vt.isEmpty() && !v.isEmpty()){
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < v.size(); i++){

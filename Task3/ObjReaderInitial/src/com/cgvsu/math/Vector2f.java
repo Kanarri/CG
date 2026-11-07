@@ -11,5 +11,4 @@ public class Vector2f {
 
     public Object getX() {return x;}
     public Object getY() {return y;}
-    public Object getZ() {return 0.0;}
 }
